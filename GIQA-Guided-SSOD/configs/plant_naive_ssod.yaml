@@ -1,0 +1,5 @@
+_BASE_: "plant_baseline.yaml"
+SEMISUPNET:
+  UNSUP_LOSS_WEIGHT: 10.0
+  IQA_WEIGHT_ON: False
+OUTPUT_DIR: "output/plant_naive_ssod"

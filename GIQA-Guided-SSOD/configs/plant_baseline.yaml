@@ -1,0 +1,47 @@
+_BASE_: "Base-RCNN-FPN.yaml"
+SEED: 42
+MODEL:
+  META_ARCHITECTURE: "TwoStagePseudoLabGeneralizedRCNN"
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 50
+  PROPOSAL_GENERATOR:
+    NAME: "PseudoLabRPN"
+  RPN:
+    POSITIVE_FRACTION: 0.25
+    LOSS: "CrossEntropy"
+  ROI_HEADS:
+    NAME: "StandardROIHeadsPseudoLab"
+    LOSS: "FocalLoss"
+    NUM_CLASSES: 1
+SOLVER:
+  LR_SCHEDULER_NAME: "WarmupMultiStepLR"
+  WARMUP_ITERS: 8
+  STEPS: (990, 995)
+  MAX_ITER: 1000
+  IMG_PER_BATCH_LABEL: 4
+  IMG_PER_BATCH_UNLABEL: 16
+  BASE_LR: 0.005
+  CHECKPOINT_PERIOD: 1000
+DATALOADER:
+  SUP_PERCENT: 100.0
+  RANDOM_DATA_SEED: 1
+DATASETS:
+  CROSS_DATASET: True
+  TRAIN_LABEL: ("giqa_train_label",)
+  TRAIN_UNLABEL: ("giqa_train_unlabel",)
+  TEST: ("giqa_val",)
+SEMISUPNET:
+  Trainer: "giqa_ssod"
+  BBOX_THRESHOLD: 0.6
+  TEACHER_UPDATE_ITER: 1
+  BURN_UP_STEP: 100
+  EMA_KEEP_RATE: 0.992
+  UNSUP_LOSS_WEIGHT: 0.0
+  IQA_WEIGHT_ON: False
+TEST:
+  EVAL_PERIOD: 200
+INPUT:
+  MIN_SIZE_TEST: 1024
+OUTPUT_DIR: "output/plant_baseline"

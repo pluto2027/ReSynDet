@@ -1,0 +1,14 @@
+_BASE_: "plant_baseline.yaml"
+SEMISUPNET:
+  UNSUP_LOSS_WEIGHT: 10.0
+  IQA_WEIGHT_ON: True
+  IQA_SCORE_PATH: "scores.csv"
+  IQA_SCORE_FIELD: "norm_score"
+  IQA_SCORE_SCALE: 100.0
+  IQA_WEIGHT_MAPPING: "linear"
+  IQA_WEIGHT_MIN: 0.0
+  IQA_WEIGHT_MAX: 3.0
+  IQA_WEIGHT_NORMALIZE_MEAN: True
+  IQA_WEIGHT_TARGET_MEAN: 1.0
+  IQA_FILTER_ON: False
+OUTPUT_DIR: "output/plant_giqa_guided_ssod"
